@@ -106,11 +106,17 @@ st.markdown('<p class="subtitle">Fill in your health details to get an estimated
 st.markdown('<div class="card">', unsafe_allow_html=True)
 st.markdown("### 👤 Personal Details")
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 with col1:
     age = st.number_input("Age", min_value=18, max_value=100, value=30)
 with col2:
-    bmi = st.number_input("BMI", min_value=10.0, max_value=60.0, value=25.0, step=0.1)
+    weight = st.number_input("Weight (kg)", min_value=30.0, max_value=200.0, value=70.0, step=0.5)
+with col3:
+    height = st.number_input("Height (cm)", min_value=100.0, max_value=250.0, value=170.0, step=0.5)
+
+# Auto calculate BMI
+bmi = weight / ((height / 100) ** 2)
+st.info(f"📊 Your calculated BMI: **{bmi:.1f}**")
 
 st.markdown('</div>', unsafe_allow_html=True)
 

@@ -107,6 +107,50 @@ st.markdown("""
         font-weight: 500 !important;
     }
 
+    /* Fix dark dropdowns and inputs */
+    .stSelectbox div[data-baseweb="select"] > div,
+    .stSelectbox div[data-baseweb="select"] span,
+    div[data-baseweb="select"] > div {
+        background-color: white !important;
+        color: #1a1a2e !important;
+        border: 1.5px solid #c7d2fe !important;
+        border-radius: 8px !important;
+    }
+
+    /* Dropdown options list */
+    div[data-baseweb="popover"] ul,
+    div[data-baseweb="menu"] {
+        background-color: white !important;
+        color: #1a1a2e !important;
+    }
+
+    div[data-baseweb="option"] {
+        background-color: white !important;
+        color: #1a1a2e !important;
+    }
+
+    div[data-baseweb="option"]:hover {
+        background-color: #e8f0fe !important;
+        color: #1a237e !important;
+    }
+
+    /* Fix number input */
+    .stNumberInput div[data-baseweb="input"] {
+        background-color: white !important;
+        border: 1.5px solid #c7d2fe !important;
+        border-radius: 8px !important;
+    }
+
+    .stNumberInput input {
+        background-color: white !important;
+        color: #1a1a2e !important;
+    }
+
+    /* Fix selectbox text */
+    .stSelectbox div[data-baseweb="select"] div {
+        color: #1a1a2e !important;
+    }
+
     /* Footer */
     .footer {
         text-align: center;

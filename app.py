@@ -15,37 +15,60 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap');
 
-    html, body, [class*="css"] {
-        font-family: 'Sora', sans-serif;
-    }
-
-    .main {
-        background-color: #f0f4f8;
+    html, body, [class*="css"], .stApp {
+        font-family: 'Sora', sans-serif !important;
+        color: #1a1a2e !important;
     }
 
     .stApp {
-        background: linear-gradient(135deg, #e8f0fe 0%, #f0f4f8 100%);
+        background: linear-gradient(135deg, #e8f0fe 0%, #f0f4f8 100%) !important;
     }
 
-    h1 {
-        color: #1a237e;
-        font-weight: 700;
-        font-size: 2rem;
+    h1, h2, h3 {
+        color: #1a237e !important;
+        font-weight: 700 !important;
+    }
+
+    p, label, div {
+        color: #1a1a2e !important;
     }
 
     .subtitle {
-        color: #5c6bc0;
+        color: #3949ab !important;
         font-size: 1rem;
         margin-bottom: 2rem;
     }
 
+    /* Input labels */
+    .stNumberInput label, .stSelectbox label {
+        color: #1a237e !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* Cards */
+    .card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        margin-bottom: 1.5rem;
+        border: 1px solid #e0e7ff;
+    }
+
+    .card h3 {
+        color: #1a237e !important;
+        margin-bottom: 1rem;
+    }
+
+    /* Result box */
     .result-box {
         background: linear-gradient(135deg, #1a237e, #3949ab);
-        color: white;
+        color: white !important;
         padding: 2rem;
         border-radius: 16px;
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         font-weight: 700;
         margin-top: 1.5rem;
         box-shadow: 0 8px 32px rgba(26,35,126,0.3);
@@ -53,45 +76,52 @@ st.markdown("""
 
     .result-label {
         font-size: 0.9rem;
-        font-weight: 300;
-        opacity: 0.85;
+        font-weight: 400;
+        opacity: 0.9;
         margin-bottom: 0.5rem;
+        color: white !important;
     }
 
+    /* Button */
     .stButton > button {
-        background: linear-gradient(135deg, #1a237e, #3949ab);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 0.75rem 2rem;
-        font-size: 1rem;
-        font-family: 'Sora', sans-serif;
-        font-weight: 600;
-        width: 100%;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #1a237e, #3949ab) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 0.75rem 2rem !important;
+        font-size: 1rem !important;
+        font-family: 'Sora', sans-serif !important;
+        font-weight: 600 !important;
+        width: 100% !important;
+        transition: all 0.3s ease !important;
     }
 
     .stButton > button:hover {
-        background: linear-gradient(135deg, #3949ab, #1a237e);
-        box-shadow: 0 4px 15px rgba(26,35,126,0.4);
+        background: linear-gradient(135deg, #3949ab, #1a237e) !important;
+        box-shadow: 0 4px 15px rgba(26,35,126,0.4) !important;
     }
 
-    .card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-        margin-bottom: 1rem;
+    /* Info box */
+    .stAlert {
+        color: #1a237e !important;
+        font-weight: 500 !important;
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        color: #6b7280 !important;
+        font-size: 0.8rem;
+        margin-top: 2rem;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Hardcoded selected features (no pkl needed)
+# Hardcoded selected features
 selected_features = ['Age', 'AnyTransplants', 'AnyChronicDiseases', 'KnownAllergies',
                      'HistoryOfCancerInFamily', 'NumberOfMajorSurgeries', 'BMI']
 
-# Load model only
+# Load model
 @st.cache_resource
 def load_model():
     model = joblib.load('insurance_model.joblib')
@@ -103,7 +133,7 @@ model = load_model()
 st.markdown("## 🏥 Insurance Premium Predictor")
 st.markdown('<p class="subtitle">Fill in your health details to get an estimated insurance premium</p>', unsafe_allow_html=True)
 
-# Input form
+# Personal Details Card
 st.markdown('<div class="card">', unsafe_allow_html=True)
 st.markdown("### 👤 Personal Details")
 
@@ -118,7 +148,6 @@ with col3:
 # Auto calculate BMI
 bmi = weight / ((height / 100) ** 2)
 
-# BMI category
 if bmi < 18.5:
     bmi_category = "Underweight 🟡"
 elif bmi < 25:
@@ -129,9 +158,9 @@ else:
     bmi_category = "Obese 🔴"
 
 st.info(f"📊 Your calculated BMI: **{bmi:.1f}** — {bmi_category}")
-
 st.markdown('</div>', unsafe_allow_html=True)
 
+# Medical History Card
 st.markdown('<div class="card">', unsafe_allow_html=True)
 st.markdown("### 🏨 Medical History")
 
@@ -176,4 +205,4 @@ if st.button("💰 Predict My Premium"):
 
 # Footer
 st.markdown("---")
-st.markdown('<p style="text-align:center; color:#9e9e9e; font-size:0.8rem;">Built with Streamlit • Insurance Premium Prediction ML Model</p>', unsafe_allow_html=True)
+st.markdown('<p class="footer">Built with Streamlit • Insurance Premium Prediction ML Model</p>', unsafe_allow_html=True)

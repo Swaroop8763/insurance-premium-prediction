@@ -39,14 +39,12 @@ st.markdown("""
         margin-bottom: 2rem;
     }
 
-    /* Input labels */
     .stNumberInput label, .stSelectbox label {
         color: #1a237e !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
     }
 
-    /* Cards */
     .card {
         background: white;
         border-radius: 16px;
@@ -61,7 +59,6 @@ st.markdown("""
         margin-bottom: 1rem;
     }
 
-    /* Result box */
     .result-box {
         background: linear-gradient(135deg, #1a237e, #3949ab);
         color: white !important;
@@ -82,7 +79,6 @@ st.markdown("""
         color: white !important;
     }
 
-    /* Button */
     .stButton > button {
         background: linear-gradient(135deg, #1a237e, #3949ab) !important;
         color: white !important;
@@ -101,7 +97,6 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(26,35,126,0.4) !important;
     }
 
-    /* Info box */
     .stAlert {
         color: #1a237e !important;
         font-weight: 500 !important;
@@ -117,7 +112,6 @@ st.markdown("""
         border-radius: 8px !important;
     }
 
-    /* Dropdown options list */
     div[data-baseweb="popover"] ul,
     div[data-baseweb="menu"] {
         background-color: white !important;
@@ -134,7 +128,6 @@ st.markdown("""
         color: #1a237e !important;
     }
 
-    /* Fix number input */
     .stNumberInput div[data-baseweb="input"] {
         background-color: white !important;
         border: 1.5px solid #c7d2fe !important;
@@ -146,12 +139,10 @@ st.markdown("""
         color: #1a1a2e !important;
     }
 
-    /* Fix selectbox text */
     .stSelectbox div[data-baseweb="select"] div {
         color: #1a1a2e !important;
     }
 
-    /* Footer */
     .footer {
         text-align: center;
         color: #6b7280 !important;
@@ -161,9 +152,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Hardcoded selected features
-selected_features = ['Age', 'AnyTransplants', 'AnyChronicDiseases', 'KnownAllergies',
-                     'HistoryOfCancerInFamily', 'NumberOfMajorSurgeries', 'BMI']
+# Updated selected features including Diabetes and BloodPressureProblems
+selected_features = ['Age', 'Diabetes', 'BloodPressureProblems', 'AnyTransplants',
+                     'AnyChronicDiseases', 'KnownAllergies', 'HistoryOfCancerInFamily',
+                     'NumberOfMajorSurgeries', 'BMI']
 
 # Load model
 @st.cache_resource
@@ -183,7 +175,7 @@ st.markdown("### 👤 Personal Details")
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    age = st.number_input("Age", min_value=18, max_value=100, value=30)
+    age = st.number_input("Age", min_value=18, max_value=80, value=30)
 with col2:
     weight = st.number_input("Weight (kg)", min_value=30.0, max_value=200.0, value=70.0, step=0.5)
 with col3:
@@ -210,13 +202,20 @@ st.markdown("### 🏨 Medical History")
 
 col4, col5 = st.columns(2)
 with col4:
+    diabetes = st.selectbox("Diabetes?", ["No", "Yes"])
+    bp_problems = st.selectbox("Blood Pressure Problems?", ["No", "Yes"])
     any_transplants = st.selectbox("Any Transplants?", ["No", "Yes"])
+with col5:
     any_chronic = st.selectbox("Any Chronic Diseases?", ["No", "Yes"])
     known_allergies = st.selectbox("Known Allergies?", ["No", "Yes"])
-with col5:
     cancer_history = st.selectbox("Family History of Cancer?", ["No", "Yes"])
-    major_surgeries = st.number_input("Number of Major Surgeries", min_value=0, max_value=10, value=0)
 
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Surgeries Card
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.markdown("### 🔪 Surgical History")
+major_surgeries = st.number_input("Number of Major Surgeries", min_value=0, max_value=20, value=0)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Encode inputs
@@ -227,6 +226,8 @@ def encode(val):
 if st.button("💰 Predict My Premium"):
     input_dict = {
         'Age': age,
+        'Diabetes': encode(diabetes),
+        'BloodPressureProblems': encode(bp_problems),
         'AnyTransplants': encode(any_transplants),
         'AnyChronicDiseases': encode(any_chronic),
         'KnownAllergies': encode(known_allergies),
